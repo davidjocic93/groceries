@@ -1,0 +1,44 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+}
+
+/* label underline focus color */
+.row .input-field input:focus {
+	border-bottom: 1px solid #1a237e !important;
+	box-shadow: 0 1px 0 0 #1a237e !important
+}
+
+.delete-btn {
+	height: 40px;
+}
+
+span {
+	border-radius: 2px;
+	height: 40px;
+	line-height: 40px;
+	-webkit-box-shadow: 6px 6px 41px -10px rgba(0,0,0,0.75);
+	-moz-box-shadow: 6px 6px 41px -10px rgba(0,0,0,0.75);
+	box-shadow: 6px 6px 41px -10px rgba(0,0,0,0.75);	
+}
+
+@media screen and (min-width: 600px) and (max-width: 990px) {
+	span {
+		margin-right: 20px;
+	}
+}
+
+@media screen and (max-width: 990px) {
+	span {
+		margin-bottom: 10px;
+	}
+
+	.delete-btn {
+		margin-bottom: 10px;
+	}
+}
+
+.no-groceries {
+	color: #ff6d00;
+}

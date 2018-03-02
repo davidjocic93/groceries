@@ -1,0 +1,54 @@
+[
+  {
+    "name": "banana",
+    "quantity": 92
+  },
+  {
+    "name": "bread",
+    "quantity": 22
+  },
+  {
+    "name": "blueberry",
+    "quantity": 1
+  },
+  {
+    "name": "apple",
+    "quantity": 5
+  },
+  {
+    "name": "orange",
+    "quantity": 44
+  },
+  {
+    "name": "apricot",
+    "quantity": 3
+  },
+  {
+    "name": "salt",
+    "quantity": 3
+  },
+  {
+    "name": "sugar",
+    "quantity": 21
+  },
+  {
+    "name": "chocholate",
+    "quantity": 3
+  },
+  {
+    "name": "juice",
+    "quantity": 45
+  },
+  {
+    "name": "peach",
+    "quantity": 5
+  },
+  {
+    "name": "potato",
+    "quantity": 11
+  },
+  {
+    "name": "tomato",
+    "quantity": 34
+  }
+]
