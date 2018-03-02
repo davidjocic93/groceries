@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { communicationService } from "../service/communicationService";
 import GroceriesList from "./groceriesList";
 import InputForm from "./inputForm";
+import { pushToSocket, onIncomingData } from "../api";
 
 class MainPage extends Component {
 	constructor(props) {
@@ -14,10 +15,23 @@ class MainPage extends Component {
 		};
 	}
 
-	loadData = () => {
+	getData = () => {
+		console.log("new data")
 		communicationService.getRequest("/",
 			response => {
-				console.log(response)
+				this.setState({ groceries: response.data });
+			},
+			error => {
+				console.log(error);
+			}
+		);
+	}
+
+	loadData = () => {
+		onIncomingData(this.getData);
+
+		communicationService.getRequest("/",
+			response => {
 				this.setState({ groceries: response.data });
 			},
 			error => {
@@ -98,6 +112,8 @@ class MainPage extends Component {
 				console.log(error);
 			}
 		);
+
+		pushToSocket(data);
 	};
 
 	deleteGrocery = name => {
@@ -113,6 +129,12 @@ class MainPage extends Component {
 
 	componentDidMount() {
 		this.loadData();
+
+		// nesto((err, timestamp) => {
+		// 	this.setState({
+		// 		timestamp
+		// 	});
+		// });
 	}
 
 	render() {

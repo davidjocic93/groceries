@@ -13,7 +13,7 @@
   },
   {
     "name": "apple",
-    "quantity": 5
+    "quantity": 16
   },
   {
     "name": "orange",
@@ -22,14 +22,6 @@
   {
     "name": "apricot",
     "quantity": 3
-  },
-  {
-    "name": "salt",
-    "quantity": 3
-  },
-  {
-    "name": "sugar",
-    "quantity": 21
   },
   {
     "name": "chocholate",
@@ -50,5 +42,17 @@
   {
     "name": "tomato",
     "quantity": 34
+  },
+  {
+    "name": "salt",
+    "quantity": 20
+  },
+  {
+    "name": "sugar",
+    "quantity": 21
+  },
+  {
+    "name": "aaa",
+    "quantity": 3
   }
 ]
