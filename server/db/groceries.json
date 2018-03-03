@@ -12,10 +12,6 @@
     "quantity": 1
   },
   {
-    "name": "apple",
-    "quantity": 16
-  },
-  {
     "name": "orange",
     "quantity": 44
   },
@@ -52,7 +48,7 @@
     "quantity": 21
   },
   {
-    "name": "aaa",
-    "quantity": 3
+    "name": "apple",
+    "quantity": 9
   }
 ]

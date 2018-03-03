@@ -6,19 +6,9 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const data = fs.readFileSync("./db/groceries.json");
 const groceries = JSON.parse(data);
+let clients = [];
 
-// io.on('connection', (client) => {
-
-// 	client.on('nesto', (interval) => {
-// 		console.log('client is subscribing to timer with interval ', interval);
-// 		setInterval(() => {
-// 			client.emit('timer', new Date());
-// 		}, interval);
-// 	});
-
-// });
-
-function toNumber(param) {
+function convertToNumber(param) {
 	if (typeof (param.quantity) !== "number") {
 		param.quantity = Number(param.quantity);
 	}
@@ -36,75 +26,95 @@ app.use(function (req, res, next) {
 	next();
 });
 
-io.on("connection", (socket) => {
-	console.log("client conected");
+app.get("/", (req, res) => {
+	console.log("GET REQUEST");
+	res.send(groceries);
+});
 
-	app.get("/", (req, res) => {
-		res.send(groceries);
+app.post("/", (req, res) => {
+	let currentData = groceries;
+	let incomingData = req.body;
+
+	convertToNumber(incomingData);
+
+	currentData.push(incomingData);
+	let data = JSON.stringify(currentData, null, 2);
+
+	fs.writeFile("./db/groceries.json", data, () => {
+		console.log(incomingData.name + " successfully added!");
 	});
+	res.send(incomingData);
+});
 
-	app.post("/", (req, res) => {
-		let currentData = groceries;
-		let incomingData = req.body;
+app.put("/:groceryName", (req, res) => {
+	let groceryName = req.params.groceryName;
+	let currentData = groceries;
+	let incomingData = req.body;
+	let newData = [];
 
-		toNumber(incomingData);
+	convertToNumber(incomingData);
 
-		currentData.push(incomingData);
-		let data = JSON.stringify(currentData, null, 2);
-
-		fs.writeFile("./db/groceries.json", data, () => {
-			console.log(incomingData.name + " successfully added!");
-		});
-		res.send(incomingData);
-	});
-
-	app.put("/:groceryName", (req, res) => {
-		let groceryName = req.params.groceryName;
-		let currentData = groceries;
-		let incomingData = req.body;
-		let newData = [];
-
-		toNumber(incomingData);
-
-		for (let i = 0; i < currentData.length; i++) {
-			let grocery = currentData[i];
-			if (groceryName === grocery.name) {
-				grocery.quantity = incomingData.quantity;
-			}
-			newData.push(grocery);
+	for (let i = 0; i < currentData.length; i++) {
+		let grocery = currentData[i];
+		if (groceryName === grocery.name) {
+			grocery.quantity = incomingData.quantity;
 		}
+		newData.push(grocery);
+	}
 
-		let data = JSON.stringify(newData, null, 2);
+	let data = JSON.stringify(newData, null, 2);
 
-		fs.writeFile("./db/groceries.json", data, () => {
-			console.log(groceryName + " successfully updated!");
-		});
-		res.send(incomingData);
+	fs.writeFile("./db/groceries.json", data, () => {
+		console.log(groceryName + " successfully updated!");
 	});
+	res.send(incomingData);
+});
 
-	app.delete("/:groceryName", (req, res) => {
-		let groceryName = req.params.groceryName;
-		let currentData = groceries;
+app.delete("/:groceryName", (req, res) => {
+	let groceryName = req.params.groceryName;
+	let currentData = groceries;
 
-		for (let i = 0; i < currentData.length; i++) {
-			let grocery = currentData[i];
-			if (groceryName === grocery.name) {
-				currentData.splice(i, 1);
-			}
+	for (let i = 0; i < currentData.length; i++) {
+		let grocery = currentData[i];
+		if (groceryName === grocery.name) {
+			currentData.splice(i, 1);
 		}
+	}
 
-		let data = JSON.stringify(currentData, null, 2);
+	let data = JSON.stringify(currentData, null, 2);
 
-		fs.writeFile("./db/groceries.json", data, () => {
-			console.log(groceryName + " successfully deleted!");
-		});
-		res.send(groceryName + " successfully deleted!");
+	fs.writeFile("./db/groceries.json", data, () => {
+		console.log(groceryName + " successfully deleted!");
 	});
+	res.send(groceryName + " successfully deleted!");
+});
+
+app.get("*", (req, res) => {
+	res.send("WRONG URL BUDDY");
+});
+
+io.sockets.on("connection", (socket) => {
+	console.log("client conected on socket " + socket.id);
+	clients.push(socket.id);
 
 	socket.on("pushToSocket", () => {
 		console.log("pushed")
-		socket.emit("newData");
+		console.log(clients.length);
+		for (let i = 0; i < clients.length; i++) {
+			io.sockets.connected[clients[i]].emit("newData");
+			socketId = clients[i];
+			console.log("emitted to socket " + socketId);
+		}
 	});
+
+	socket.on('disconnect', () => {
+
+		for (let i = 0; i < clients.length; i++) {
+			if (clients[i] === socket.id) {
+				clients.splice(i, 1);
+			}
+		}
+	})
 });
 
 

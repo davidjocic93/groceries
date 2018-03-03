@@ -29,15 +29,9 @@ class MainPage extends Component {
 
 	loadData = () => {
 		onIncomingData(this.getData);
+		console.log("loaded")
 
-		communicationService.getRequest("/",
-			response => {
-				this.setState({ groceries: response.data });
-			},
-			error => {
-				console.log(error);
-			}
-		);
+		this.getData();
 	};
 
 	handleInputChange = (event) => {
@@ -73,6 +67,9 @@ class MainPage extends Component {
 		}
 
 		this.addNew(newGroceryName, newGroceryQuantity);
+
+		pushToSocket();
+
 
 		this.setState({
 			newGroceryName: "",
@@ -112,8 +109,6 @@ class MainPage extends Component {
 				console.log(error);
 			}
 		);
-
-		pushToSocket(data);
 	};
 
 	deleteGrocery = name => {
@@ -125,16 +120,11 @@ class MainPage extends Component {
 				console.log(error);
 			}
 		);
+		pushToSocket();		
 	};
 
 	componentDidMount() {
 		this.loadData();
-
-		// nesto((err, timestamp) => {
-		// 	this.setState({
-		// 		timestamp
-		// 	});
-		// });
 	}
 
 	render() {

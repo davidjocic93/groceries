@@ -1,3 +1,4 @@
+import _ from "lodash";
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:5000');
 
@@ -8,11 +9,13 @@ const socket = openSocket('http://localhost:5000');
 
 function onIncomingData(callback) {
   socket.on("newData", () => {
-    callback();
+    const debounced = _.debounce(callback, 500);
+    debounced();
+    console.log("on incoming data")
   });
 }
 
-function pushToSocket(data) {
+function pushToSocket() {
   socket.emit("pushToSocket");
 }
 
