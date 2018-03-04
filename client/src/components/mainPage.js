@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { communicationService } from "../service/communicationService";
 import GroceriesList from "./groceriesList";
 import InputForm from "./inputForm";
-import { pushToSocket, onIncomingData } from "../api";
+import { notifyServer, onSocketNotification } from "../sockets";
 
 class MainPage extends Component {
 	constructor(props) {
@@ -16,7 +16,6 @@ class MainPage extends Component {
 	}
 
 	getData = () => {
-		console.log("new data")
 		communicationService.getRequest("/",
 			response => {
 				this.setState({ groceries: response.data });
@@ -28,10 +27,9 @@ class MainPage extends Component {
 	}
 
 	loadData = () => {
-		onIncomingData(this.getData);
-		console.log("loaded")
-
 		this.getData();
+		onSocketNotification(this.getData);
+		console.log("loaded");
 	};
 
 	handleInputChange = (event) => {
@@ -57,7 +55,7 @@ class MainPage extends Component {
 		return -1;
 	};
 
-	onButtonClick = event => {
+	onAddButtonClick = event => {
 		event.preventDefault();
 		const newGroceryName = this.state.newGroceryName.toLowerCase();
 		const newGroceryQuantity = this.state.newGroceryQuantity;
@@ -68,7 +66,7 @@ class MainPage extends Component {
 
 		this.addNew(newGroceryName, newGroceryQuantity);
 
-		pushToSocket();
+		notifyServer();
 
 
 		this.setState({
@@ -120,7 +118,7 @@ class MainPage extends Component {
 				console.log(error);
 			}
 		);
-		pushToSocket();		
+		notifyServer();
 	};
 
 	componentDidMount() {
@@ -139,11 +137,9 @@ class MainPage extends Component {
 
 				<InputForm
 					handleInputChange={this.handleInputChange}
-					// handleGroceryNameChange={this.handleGroceryNameChange}
-					// handleGroceryQuantityChange={this.handleGroceryQuantityChange}
 					newGroceryName={this.state.newGroceryName}
 					newGroceryQuantity={this.state.newGroceryQuantity}
-					onButtonClick={this.onButtonClick} />
+					onAddButtonClick={this.onAddButtonClick} />
 
 				{(this.state.groceries.length ?
 					<GroceriesList

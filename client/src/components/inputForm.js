@@ -1,7 +1,8 @@
 import React from "react";
 
 const InputForm = props => {
-    const { handleInputChange, newGroceryName, newGroceryQuantity, onButtonClick } = props;
+    const { handleInputChange, newGroceryName, newGroceryQuantity, onAddButtonClick } = props;
+    
     return (
         <div className="row">
             <form className="col s12">
@@ -27,7 +28,7 @@ const InputForm = props => {
                         />
                     </div>
                     <div className="col s12 center-align">
-                        <button className="waves-effect waves-light btn indigo darken-4" onClick={onButtonClick}><i className="material-icons">add</i></button>
+                        <button className="waves-effect waves-light btn indigo darken-4" onClick={onAddButtonClick}><i className="material-icons">add</i></button>
                     </div>
                 </div>
                 <div className="row">

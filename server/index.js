@@ -32,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
+	console.log("POST REQUEST");
 	let currentData = groceries;
 	let incomingData = req.body;
 
@@ -47,6 +48,7 @@ app.post("/", (req, res) => {
 });
 
 app.put("/:groceryName", (req, res) => {
+	console.log("PUT REQUEST");
 	let groceryName = req.params.groceryName;
 	let currentData = groceries;
 	let incomingData = req.body;
@@ -71,6 +73,7 @@ app.put("/:groceryName", (req, res) => {
 });
 
 app.delete("/:groceryName", (req, res) => {
+	console.log("DELETE REQUEST");
 	let groceryName = req.params.groceryName;
 	let currentData = groceries;
 
@@ -89,21 +92,13 @@ app.delete("/:groceryName", (req, res) => {
 	res.send(groceryName + " successfully deleted!");
 });
 
-app.get("*", (req, res) => {
-	res.send("WRONG URL BUDDY");
-});
-
 io.sockets.on("connection", (socket) => {
 	console.log("client conected on socket " + socket.id);
 	clients.push(socket.id);
 
-	socket.on("pushToSocket", () => {
-		console.log("pushed")
-		console.log(clients.length);
+	socket.on("notifyServer", () => {
 		for (let i = 0; i < clients.length; i++) {
-			io.sockets.connected[clients[i]].emit("newData");
-			socketId = clients[i];
-			console.log("emitted to socket " + socketId);
+			io.sockets.connected[clients[i]].emit("notifyClient");
 		}
 	});
 
@@ -119,6 +114,6 @@ io.sockets.on("connection", (socket) => {
 
 
 const PORT = process.env.PORT || 5000;
-http.listen(PORT, (PORT) => {
+http.listen(PORT, () => {
 	console.log("Server is running!");
 });
