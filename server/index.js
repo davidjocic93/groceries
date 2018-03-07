@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const data = fs.readFileSync("./db/groceries.json");
 const groceries = JSON.parse(data);
-let clients = [];
 
 function convertToNumber(param) {
 	if (typeof (param.quantity) !== "number") {
@@ -93,25 +92,10 @@ app.delete("/:groceryName", (req, res) => {
 });
 
 io.sockets.on("connection", (socket) => {
-	console.log("client conected on socket " + socket.id);
-	clients.push(socket.id);
-
 	socket.on("notifyServer", () => {
-		for (let i = 0; i < clients.length; i++) {
-			io.sockets.connected[clients[i]].emit("notifyClient");
-		}
+		socket.broadcast.emit("notifyClient");
 	});
-
-	socket.on('disconnect', () => {
-
-		for (let i = 0; i < clients.length; i++) {
-			if (clients[i] === socket.id) {
-				clients.splice(i, 1);
-			}
-		}
-	})
 });
-
 
 const PORT = process.env.PORT || 5000;
 http.listen(PORT, () => {

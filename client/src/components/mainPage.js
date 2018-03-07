@@ -8,6 +8,8 @@ class MainPage extends Component {
 	constructor(props) {
 		super(props);
 
+		onSocketNotification(this.getData);
+
 		this.state = {
 			groceries: [],
 			newGroceryName: "",
@@ -21,15 +23,13 @@ class MainPage extends Component {
 				this.setState({ groceries: response.data });
 			},
 			error => {
-				console.log(error);
+				this.processError(error);
 			}
 		);
 	}
 
 	loadData = () => {
 		this.getData();
-		onSocketNotification(this.getData);
-		console.log("loaded");
 	};
 
 	handleInputChange = (event) => {
@@ -93,7 +93,7 @@ class MainPage extends Component {
 					this.loadData();
 				},
 				error => {
-					console.log(error);
+					this.processError(error);
 				}
 			);
 			return;
@@ -104,7 +104,7 @@ class MainPage extends Component {
 				this.loadData();
 			},
 			error => {
-				console.log(error);
+				this.processError(error);
 			}
 		);
 	};
@@ -115,11 +115,15 @@ class MainPage extends Component {
 				this.loadData();
 			},
 			error => {
-				console.log(error);
+				this.processError(error);
 			}
 		);
 		notifyServer();
 	};
+
+	processError = (error) => {
+		console.log(error);
+	}
 
 	componentDidMount() {
 		this.loadData();

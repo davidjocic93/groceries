@@ -6,7 +6,6 @@ function onSocketNotification(callback) {
   socket.on("notifyClient", () => {
     const debounced = _.debounce(callback, 500);
     debounced();
-    console.log("print on socket notification");
   });
 }
 
