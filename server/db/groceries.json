@@ -1,9 +1,5 @@
 [
   {
-    "name": "banana",
-    "quantity": 92
-  },
-  {
     "name": "bread",
     "quantity": 22
   },
@@ -52,11 +48,7 @@
     "quantity": 9
   },
   {
-    "name": "aa",
-    "quantity": 9
-  },
-  {
-    "name": "a",
-    "quantity": 85
+    "name": "banana",
+    "quantity": 14
   }
 ]

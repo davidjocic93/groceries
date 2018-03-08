@@ -8,13 +8,15 @@
 		"npm": "5.4.2"
 	},
 	"scripts": {
-		"start": "node index.js"
+		"start": "node index.js",
+		"dev": "nodemon index.js"
 	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
 		"body-parser": "^1.18.2",
 		"express": "^4.16.2",
+		"nodemon": "^1.17.1",
 		"socket.io": "^2.0.4"
 	}
 }

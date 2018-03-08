@@ -1,7 +1,8 @@
 import React from "react";
 import _ from "lodash";
+import PropTypes from "prop-types";
 
-const GroceriesList = (props) => {
+export const GroceriesList = (props) => {
     const { groceries, deleteGrocery } = props;
     const sortedGroceries = _.sortBy(groceries, "name");
 
@@ -28,7 +29,14 @@ const GroceriesList = (props) => {
                 );
             })}
         </div>
-    )
+    );
 }
 
-export default GroceriesList;
+GroceriesList.defaultProps = {
+    groceries: []
+}
+
+GroceriesList.propTypes = {
+    groceries: PropTypes.array,
+    deleteGrocery: PropTypes.func
+}

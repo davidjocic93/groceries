@@ -1,6 +1,5 @@
 import axios from "axios";
-// const BASE_URL = "http://polar-brushlands-27994.herokuapp.com";
-const BASE_URL = "http://localhost:5000";
+import { BASE_URL } from "../constants";
 
 class CommunicationService {
 	getRequest(url, succesHandler, errorHandler) {

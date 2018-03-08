@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const InputForm = props => {
+export const InputForm = props => {
     const { handleInputChange, newGroceryName, newGroceryQuantity, onAddButtonClick } = props;
-    
+
     return (
         <div className="row">
             <form className="col s12">
@@ -35,7 +36,17 @@ const InputForm = props => {
                 </div>
             </form>
         </div>
-    )
+    );
 }
 
-export default InputForm;
+InputForm.defaultProps = {
+    newGroceryName: "",
+    newGroceryQuantity: ""
+}
+
+InputForm.propTypes = {
+    handleInputChange: PropTypes.func,
+    onAddButtonClick: PropTypes.func,
+    newGroceryName: PropTypes.string,
+    newGroceryQuantity: PropTypes.string
+}

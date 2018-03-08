@@ -1,8 +1,8 @@
 import React, { Component } from "react";
+import { GroceriesList } from "../components/groceriesList";
+import { InputForm } from "../components/inputForm";
 import { communicationService } from "../service/communicationService";
-import GroceriesList from "./groceriesList";
-import InputForm from "./inputForm";
-import { notifyServer, onSocketNotification } from "../sockets";
+import { notifyServer, onSocketNotification } from "../service/socket-io";
 
 class MainPage extends Component {
 	constructor(props) {
@@ -37,10 +37,6 @@ class MainPage extends Component {
 		let value = target.value;
 		const name = target.name;
 
-		if (name === "newGroceryQuantity") {
-			value = Number(target.value);
-		}
-
 		this.setState({
 			[name]: value
 		});
@@ -64,7 +60,7 @@ class MainPage extends Component {
 			return;
 		}
 
-		this.addNew(newGroceryName, newGroceryQuantity);
+		this.addNew(newGroceryName, Number(newGroceryQuantity));
 
 		notifyServer();
 
